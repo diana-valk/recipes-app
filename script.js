@@ -49,6 +49,19 @@ tabs.forEach((tab, index) => {
 const addBtn = document.getElementById("add-btn");
 
 addBtn.addEventListener("click", () => {
+  document.addEventListener("click", (e) => {
+  if (e.target.id === "save-btn") {
+    const inputs = document.querySelectorAll("input, textarea");
+    const title = inputs[0].value;
+
+    if (!title) return;
+
+    recipes.push({ title });
+    localStorage.setItem("recipes", JSON.stringify(recipes));
+
+    renderRecipes();
+  }
+});
   header.textContent = "Новый рецепт";
   content.innerHTML = `
     <div style="padding:16px; color:#1f1f1f;">
@@ -64,18 +77,4 @@ addBtn.addEventListener("click", () => {
       <button id="save-btn" style="margin-top:16px;">Сохранить</button>
     </div>
   `;
-});
-
-document.addEventListener("click", (e) => {
-  if (e.target.id === "save-btn") {
-    const inputs = document.querySelectorAll("input, textarea");
-    const title = inputs[0].value;
-
-    if (!title) return;
-
-    recipes.push({ title });
-    localStorage.setItem("recipes", JSON.stringify(recipes));
-
-    renderRecipes();
-  }
 });
