@@ -61,7 +61,21 @@ addBtn.addEventListener("click", () => {
       <label>Ингредиенты (каждый с новой строки)</label>
       <textarea placeholder="Яйца\nМолоко" style="width:100%; height:80px;"></textarea>
 
-      <button style="margin-top:16px;">Сохранить</button>
+      <button id="save-btn" style="margin-top:16px;">Сохранить</button>
     </div>
   `;
+});
+
+document.addEventListener("click", (e) => {
+  if (e.target.id === "save-btn") {
+    const inputs = document.querySelectorAll("input, textarea");
+    const title = inputs[0].value;
+
+    if (!title) return;
+
+    recipes.push({ title });
+    localStorage.setItem("recipes", JSON.stringify(recipes));
+
+    renderRecipes();
+  }
 });
