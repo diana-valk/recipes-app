@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #ffffff;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f1f1f;
+  text-align: center;
+}
+
+#content {
+  flex: 1;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Карточки */
+
+.card {
+  padding: 20px;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Пастельные цвета (усилены под белый текст) */
+
+.lavender { background: #8f86d9; }
+.peach    { background: #f2a68c; }
+.green    { background: #8fc7a3; }
+.blue     { background: #8bb7e6; }
+.yellow   { background: #e3c95f; }
+.pink     { background: #e8a3bd; }
+
+/* Нижние вкладки */
+
+.tabs {
+  display: flex;
+  border-top: 1px solid #eee;
+}
+
+.tab {
+  flex: 1;
+  padding: 14px 0;
+  font-size: 14px;
+  background: none;
+  border: none;
+  color: #8a8a8a;
+}
+
+.tab.active {
+  color: #1f1f1f;
+  font-weight: 600;
+}
