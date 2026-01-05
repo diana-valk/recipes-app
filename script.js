@@ -20,7 +20,9 @@ function renderRecipes() {
   recipes.forEach(item => {
     const card = document.createElement("div");
     card.className = "card lavender";
-    card.textContent = item.title;
+    card.textContent = item.type === "product"
+  ? `🟢 ${item.title}`
+  : item.title;
     content.appendChild(card);
   });
 
@@ -30,17 +32,31 @@ function renderRecipes() {
 
 // ====== ЭКРАН ДОБАВЛЕНИЯ ======
 function openAddScreen() {
-  header.textContent = "Новый рецепт";
+  header.textContent = "Новый";
+
   content.innerHTML = `
     <div style="padding:16px; color:#1f1f1f;">
+      
+      <label>Тип</label>
+      <div style="margin-bottom:12px;">
+        <label>
+          <input type="radio" name="type" value="recipe" checked />
+          Рецепт
+        </label>
+        <label style="margin-left:12px;">
+          <input type="radio" name="type" value="product" />
+          Продукт
+        </label>
+      </div>
+
       <label>Название</label>
       <input id="title-input" placeholder="Например: Омлет" style="width:100%; margin-bottom:12px;" />
 
       <label>Описание</label>
-      <textarea placeholder="Коротко про приготовление" style="width:100%; margin-bottom:12px;"></textarea>
+      <textarea id="description-input" placeholder="Коротко про приготовление" style="width:100%; margin-bottom:12px;"></textarea>
 
       <label>Ингредиенты (каждый с новой строки)</label>
-      <textarea placeholder="Яйца\nМолоко" style="width:100%; height:80px;"></textarea>
+      <textarea id="ingredients-input" placeholder="Яйца\nМолоко" style="width:100%; height:80px;"></textarea>
 
       <button id="save-btn" style="margin-top:16px;">Сохранить</button>
     </div>
@@ -55,7 +71,12 @@ document.addEventListener("click", (e) => {
 
     if (!title) return;
 
-    recipes.push({ title });
+    const type = document.querySelector('input[name="type"]:checked').value;
+
+recipes.push({
+  title,
+  type
+});
     localStorage.setItem("recipes", JSON.stringify(recipes));
 
     renderRecipes();
