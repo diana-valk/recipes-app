@@ -1,4 +1,16 @@
 let recipes = JSON.parse(localStorage.getItem("recipes")) || [];const tabs = document.querySelectorAll(".tab");
+function renderRecipes() {
+  header.textContent = "Рецепты";
+  content.innerHTML = "";
+
+  recipes.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card lavender";
+    card.textContent = item.title;
+    content.appendChild(card);
+  });
+}
+
 const header = document.querySelector(".header");
 const content = document.getElementById("content");
 
