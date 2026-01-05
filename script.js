@@ -1,4 +1,4 @@
-const tabs = document.querySelectorAll(".tab");
+let recipes = JSON.parse(localStorage.getItem("recipes")) || [];const tabs = document.querySelectorAll(".tab");
 const header = document.querySelector(".header");
 const content = document.getElementById("content");
 
