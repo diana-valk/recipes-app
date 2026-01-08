@@ -1,37 +1,70 @@
-// ====== ДАННЫЕ ======
+// ===== ДАННЫЕ =====
 let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
 
-// ====== ЭЛЕМЕНТЫ ======
-const tabs = document.querySelectorAll(".tab");
+// ===== ЭЛЕМЕНТЫ =====
 const header = document.querySelector(".header");
 const content = document.getElementById("content");
+const tabs = document.querySelectorAll(".tab");
 const addBtn = document.getElementById("add-btn");
 
-// ====== ОТРИСОВКА РЕЦЕПТОВ ======
+// ===== ОТРИСОВКА РЕЦЕПТОВ =====
 function renderRecipes() {
-  header.innerHTML = `<span id="header-title">Рецепты</span><button id="add-btn">＋</button>`;
+  header.textContent = "Рецепты";
   content.innerHTML = "";
 
   if (recipes.length === 0) {
-    content.innerHTML = `<p style="color:#1f1f1f; text-align:center;">Пока нет рецептов</p>`;
+    content.innerHTML = `
+      <p style="text-align:center; color:#888;">
+        Пока нет рецептов
+      </p>
+    `;
     return;
   }
 
   recipes.forEach(item => {
     const card = document.createElement("div");
     card.className = "card lavender";
-    card.textContent = item.type === "product"
-  ? `🟢 ${item.title}`
-  : item.title;
+    card.textContent =
+      item.type === "product"
+        ? `🟢 ${item.title}`
+        : item.title;
+
     content.appendChild(card);
   });
-
-  // заново находим кнопку +
-  document.getElementById("add-btn").addEventListener("click", openAddScreen);
 }
 
-// ====== ЭКРАН ДОБАВЛЕНИЯ ======
-function openAddScreen() {
+// ===== ВКЛАДКИ =====
+tabs.forEach((tab, index) => {
+  tab.addEventListener("click", () => {
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    if (index === 0) {
+      renderRecipes();
+    }
+
+    if (index === 1) {
+      header.textContent = "Ингредиенты";
+      content.innerHTML = `
+        <p style="text-align:center; color:#888;">
+          Раздел в разработке
+        </p>
+      `;
+    }
+
+    if (index === 2) {
+      header.textContent = "Меню";
+      content.innerHTML = `
+        <p style="text-align:center; color:#888;">
+          Раздел пока пуст
+        </p>
+      `;
+    }
+  });
+});
+
+// ===== ДОБАВЛЕНИЕ РЕЦЕПТА / ПРОДУКТА =====
+addBtn.addEventListener("click", () => {
   header.textContent = "Новый";
 
   content.innerHTML = `
@@ -50,68 +83,49 @@ function openAddScreen() {
       </div>
 
       <label>Название</label>
-      <input id="title-input" placeholder="Например: Омлет" style="width:100%; margin-bottom:12px;" />
+      <input
+        id="title-input"
+        placeholder="Например: Омлет"
+        style="width:100%; margin-bottom:12px;"
+      />
 
       <label>Описание</label>
-      <textarea id="description-input" placeholder="Коротко про приготовление" style="width:100%; margin-bottom:12px;"></textarea>
+      <textarea
+        id="description-input"
+        placeholder="Коротко про приготовление"
+        style="width:100%; margin-bottom:12px;"
+      ></textarea>
 
       <label>Ингредиенты (каждый с новой строки)</label>
-      <textarea id="ingredients-input" placeholder="Яйца\nМолоко" style="width:100%; height:80px;"></textarea>
+      <textarea
+        id="ingredients-input"
+        placeholder="Яйца\nМолоко"
+        style="width:100%; height:80px;"
+      ></textarea>
 
-      <button id="save-btn" style="margin-top:16px;">Сохранить</button>
+      <button id="save-btn" style="margin-top:16px;">
+        Сохранить
+      </button>
     </div>
   `;
-}
 
-// ====== СОХРАНЕНИЕ ======
-document.addEventListener("click", (e) => {
-  if (e.target.id === "save-btn") {
-    const titleInput = document.getElementById("title-input");
-    const title = titleInput.value.trim();
+  const saveBtn = document.getElementById("save-btn");
+
+  saveBtn.addEventListener("click", () => {
+    const title = document.getElementById("title-input").value.trim();
+    const type = document.querySelector('input[name="type"]:checked').value;
 
     if (!title) return;
 
-    const type = document.querySelector('input[name="type"]:checked').value;
+    recipes.push({
+      title,
+      type
+    });
 
-recipes.push({
-  title,
-  type
-});
     localStorage.setItem("recipes", JSON.stringify(recipes));
-
     renderRecipes();
-  }
-});
-
-// ====== ВКЛАДКИ ======
-tabs.forEach((tab, index) => {
-  tab.addEventListener("click", () => {
-    tabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-
-    if (index === 0) {
-      renderRecipes();
-    }
-
-    if (index === 1) {
-      header.textContent = "Ингредиенты";
-      content.innerHTML = `
-        <div class="card green">Яйца</div>
-        <div class="card blue">Авокадо</div>
-        <div class="card yellow">Молоко</div>
-      `;
-    }
-
-    if (index === 2) {
-      header.textContent = "Меню";
-      content.innerHTML = `
-        <p style="color:#1f1f1f; text-align:center;">
-          Раздел пока пуст
-        </p>
-      `;
-    }
   });
 });
 
-// ====== ПЕРВЫЙ ЗАПУСК ======
+// ===== СТАРТ =====
 renderRecipes();
