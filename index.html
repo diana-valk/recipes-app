@@ -2,30 +2,25 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Рецепты</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Recipes</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="app">
+  <div id="app">
+    <header class="header">
+      <span id="header-title">Рецепты</span>
+      <button id="add-btn">＋</button>
+    </header>
 
-<header class="header">
-  <span id="header-title">Рецепты</span>
-  <button id="add-btn">＋</button>
-</header>
-
-    <main id="content">
-      <div class="card lavender">Омлет</div>
-      <div class="card peach">Авокадо</div>
-    </main>
+    <main id="content"></main>
 
     <nav class="tabs">
-      <button class="tab active">Рецепты</button>
-      <button class="tab">Ингредиенты</button>
-      <button class="tab">Меню</button>
+      <div class="tab active">Рецепты</div>
+      <div class="tab">Ингредиенты</div>
+      <div class="tab">Меню</div>
     </nav>
-
   </div>
 
   <script src="script.js"></script>
