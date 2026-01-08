@@ -1,81 +1,44 @@
-// ===== ДАННЫЕ =====
 let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
 
-// ===== ЭЛЕМЕНТЫ =====
 const content = document.getElementById("content");
 const tabs = document.querySelectorAll(".tab");
-const header = document.querySelector(".header");
+const headerTitle = document.getElementById("header-title");
+const addBtn = document.getElementById("add-btn");
 
-// ===== ХЕДЕР =====
-function renderHeader(title, showAdd = false) {
-  header.innerHTML = `
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      width:100%;
-    ">
-      <span>${title}</span>
-      ${showAdd ? `<button id="add-btn" style="font-size:24px;">＋</button>` : ``}
-    </div>
-  `;
-
-  if (showAdd) {
-    document.getElementById("add-btn").addEventListener("click", openAddScreen);
-  }
-}
-
-// ===== РЕЦЕПТЫ =====
+// ===== РЕНДЕР =====
 function renderRecipes() {
-  renderHeader("Рецепты", true);
+  headerTitle.textContent = "Рецепты";
+  addBtn.style.display = "block";
   content.innerHTML = "";
 
   if (recipes.length === 0) {
-    content.innerHTML = `
-      <p style="text-align:center; color:#777;">
-        Пока нет рецептов
-      </p>
-    `;
+    content.innerHTML = `<p style="color:#8e8e93;">Пока нет рецептов</p>`;
     return;
   }
 
   recipes.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.textContent =
-      item.type === "product"
-        ? `🟢 ${item.title}`
-        : item.title;
-
-    content.appendChild(card);
+    const div = document.createElement("div");
+    div.className = "card";
+    div.textContent = item.title;
+    content.appendChild(div);
   });
 }
 
-// ===== ЭКРАН ДОБАВЛЕНИЯ =====
 function openAddScreen() {
-  renderHeader("Новый", false);
+  headerTitle.textContent = "Новый";
+  addBtn.style.display = "none";
 
   content.innerHTML = `
-    <div style="padding:16px;">
-      <label>Тип</label>
-      <div style="margin-bottom:12px;">
-        <label>
-          <input type="radio" name="type" value="recipe" checked />
-          Рецепт
-        </label>
-        <label style="margin-left:12px;">
-          <input type="radio" name="type" value="product" />
-          Продукт
-        </label>
-      </div>
-
-      <label>Название</label>
-      <input id="title-input" style="width:100%; margin-bottom:12px;" />
-
-      <button id="save-btn" style="margin-top:16px;">
-        Сохранить
-      </button>
+    <label>Тип</label>
+    <div style="margin-bottom:12px;">
+      <label><input type="radio" name="type" value="recipe" checked> Рецепт</label>
+      <label style="margin-left:12px;"><input type="radio" name="type" value="product"> Продукт</label>
     </div>
+
+    <label>Название</label>
+    <input id="title-input" />
+
+    <button id="save-btn">Сохранить</button>
   `;
 
   document.getElementById("save-btn").addEventListener("click", () => {
@@ -86,12 +49,13 @@ function openAddScreen() {
 
     recipes.push({ title, type });
     localStorage.setItem("recipes", JSON.stringify(recipes));
-
     renderRecipes();
   });
 }
 
-// ===== ВКЛАДКИ =====
+// ===== EVENTS =====
+addBtn.addEventListener("click", openAddScreen);
+
 tabs.forEach((tab, index) => {
   tab.addEventListener("click", () => {
     tabs.forEach(t => t.classList.remove("active"));
@@ -100,16 +64,18 @@ tabs.forEach((tab, index) => {
     if (index === 0) renderRecipes();
 
     if (index === 1) {
-      renderHeader("Ингредиенты");
-      content.innerHTML = `<p style="text-align:center; color:#777;">В разработке</p>`;
+      headerTitle.textContent = "Ингредиенты";
+      addBtn.style.display = "none";
+      content.innerHTML = `<p style="color:#8e8e93;">В разработке</p>`;
     }
 
     if (index === 2) {
-      renderHeader("Меню");
-      content.innerHTML = `<p style="text-align:center; color:#777;">Пусто</p>`;
+      headerTitle.textContent = "Меню";
+      addBtn.style.display = "none";
+      content.innerHTML = `<p style="color:#8e8e93;">Пусто</p>`;
     }
   });
 });
 
-// ===== СТАРТ =====
+// ===== START =====
 renderRecipes();
